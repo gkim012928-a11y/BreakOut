@@ -33,8 +33,16 @@ public class BasicGameApp implements Runnable {
 
     public BufferStrategy bufferStrategy;
 
-    Astronaut astro;
-    Image astroImage;
+    Stick stick;
+    Image stickImage;
+    BlueBlock BlueBlock;
+    Image BlueBlockImage;
+    GreenBlock GreenBlock;
+    Image GreenBlockImage;
+    RedBlock RedBlock;
+    Image RedBlockImage;
+    YellowBlock YellowBlock;
+    Image YellowBlockImage;
 
     // Main method definition
     // This is the code that runs first and automatically
@@ -49,8 +57,21 @@ public class BasicGameApp implements Runnable {
     public BasicGameApp() { // BasicGameApp constructor
 
         setUpGraphics();
-        astro = new Astronaut("astronaut.png", 300, 300);
-        astroImage = Toolkit.getDefaultToolkit().getImage("astronaut.png");
+        for(int y = 0;y<110;y=y+34) {
+            for (int x = 0; x <= 1000; x = x + 100) {
+                BlueBlock = new BlueBlock("BlueBlock.png", x, y);
+                BlueBlockImage = Toolkit.getDefaultToolkit().getImage("BlueBlock.png");
+
+                GreenBlock = new GreenBlock("GreenBlock.png", 100+x, y);
+                GreenBlockImage = Toolkit.getDefaultToolkit().getImage("Greenblock.png");
+
+                RedBlock = new RedBlock("RedBlock.png", 200+x, y);
+                RedBlockImage = Toolkit.getDefaultToolkit().getImage("RedBlock.png");
+
+                YellowBlock = new YellowBlock("YellowBlock.png", 300+x, y);
+                YellowBlockImage = Toolkit.getDefaultToolkit().getImage("YellowBlock.png");
+            }
+        }
         run();
 
     } // end BasicGameApp constructor
@@ -72,7 +93,7 @@ public class BasicGameApp implements Runnable {
     }
 
     public void moveThings() {
-        astro.move();
+
     }
 
     //Paints things on the screen using bufferStrategy
@@ -80,7 +101,11 @@ public class BasicGameApp implements Runnable {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
         //draw the image
-        g.drawImage(astroImage, astro.xpos, astro.ypos, astro.width, astro.height, null);
+        g.drawImage(BlueBlockImage, BlueBlock.xpos, BlueBlock.ypos, BlueBlock.width, BlueBlock.height, null);
+        g.drawImage(GreenBlockImage, GreenBlock.xpos, GreenBlock.ypos, GreenBlock.width, GreenBlock.height, null);
+        g.drawImage(RedBlockImage, RedBlock.xpos, RedBlock.ypos, RedBlock.width, RedBlock.height, null);
+        g.drawImage(YellowBlockImage, YellowBlock.xpos, YellowBlock.ypos, YellowBlock.width, YellowBlock.height, null);
+
 
         g.dispose();
         bufferStrategy.show();
