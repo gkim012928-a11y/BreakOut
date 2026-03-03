@@ -38,6 +38,9 @@ public class BasicGameApp implements Runnable, KeyListener {
     Stick stick;
     Image stickImage;
 
+    Ball ball;
+    Image ballImage;
+
     BlueBlock BlueBlock;
     Image BlueBlockImage;
     BlueBlock[] BlueBlockArray;
@@ -53,6 +56,8 @@ public class BasicGameApp implements Runnable, KeyListener {
     YellowBlock YellowBlock;
     Image YellowBlockImage;
     YellowBlock[] YellowBlockArray;
+
+    public boolean firstBallStick = true;
 
 
 
@@ -83,6 +88,9 @@ public class BasicGameApp implements Runnable, KeyListener {
 
         stick = new Stick("stick", 450, 600);
         stickImage = Toolkit.getDefaultToolkit().getImage("Stick.png");
+
+        ball = new Ball("wesley", 500,500);
+        ballImage = Toolkit.getDefaultToolkit().getImage("Wesley.png");
 
         for (int x = 0; x < BlueBlockArray.length; x=x+1) {
                 BlueBlockArray[x] = new BlueBlock("BlueBlock" + 1, x*100, 0);
@@ -119,6 +127,30 @@ public class BasicGameApp implements Runnable, KeyListener {
 
     public void moveThings() {
         stick.move();
+        ball.bounce();
+
+        ballStickCrash();
+    }
+
+    public void ballStickCrash(){
+        if(ball.rect.intersects(stick.rect) && firstBallStick == true){
+            firstBallStick = false;
+            ball.dy = -ball.dy;
+        }
+        if(ball.rect.intersects(stick.rect)){
+            firstBallStick = true;
+        }
+        render();
+    }
+    public void ballFloorCrash(){
+        if(ball.rect.intersects(HEIGHT) && firstBallStick == true){
+            firstBallStick = false;
+            ball.dy = -ball.dy;
+        }
+        if(ball.rect.intersects(stick.rect)){
+            firstBallStick = true;
+        }
+        render();
     }
 
     //Paints things on the screen using bufferStrategy
@@ -128,6 +160,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         //draw the image
 
         g.drawImage(stickImage, stick.xpos, stick.ypos, stick.width, stick.height, null);
+        g.drawImage(ballImage, ball.xpos, ball.ypos, ball.width, ball.height, null);
 
         for (int x = 0; x < BlueBlockArray.length; x++) {
             g.drawImage(BlueBlockImage, BlueBlockArray[x].xpos, BlueBlockArray[x].ypos, BlueBlockArray[x].width, BlueBlockArray[x].height, null);
@@ -135,6 +168,12 @@ public class BasicGameApp implements Runnable, KeyListener {
             g.drawImage(RedBlockImage, RedBlockArray[x].xpos, RedBlockArray[x].ypos, RedBlockArray[x].width, RedBlockArray[x].height, null);
             g.drawImage(YellowBlockImage, YellowBlockArray[x].xpos, YellowBlockArray[x].ypos, YellowBlockArray[x].width, YellowBlockArray[x].height, null);
         }
+
+        //write text --> make say you lost if it hits the bottom
+        g.setFont(new Font("Arial", Font.BOLD,37));
+        g.setColor(new Color(0,0,0));
+        g.drawString("Hello!", 450,500);
+
 
 
 

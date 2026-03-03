@@ -26,7 +26,7 @@ public class Ball {
         xpos = pXpos;
         ypos = pYpos;
         dx = 10;
-        dy = 10;
+        dy = -10;
         width = 50;
         height = 50;
         isAlive = true;
@@ -39,7 +39,22 @@ public class Ball {
     }
 
     public void bounce() {
+        xpos = xpos + dx;
+        ypos = ypos + dy;
+        rect = new Rectangle(xpos, ypos, width, height);
 
+        if(xpos>=1000-width){
+            dx = -dx;
+        }
+        else if(ypos>=700-height){
+            dy=-dy;
+        }
+        if(xpos<=0){
+            dx = -dx;
+        }
+        else if(ypos<=0){
+            dy=-dy;
+        }
     }
 
     public void wrap() {
