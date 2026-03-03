@@ -9,6 +9,8 @@
 
 //Graphics Libraries
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -16,7 +18,7 @@ import javax.swing.JPanel;
 
 //*******************************************************************************
 
-public class BasicGameApp implements Runnable {
+public class BasicGameApp implements Runnable, KeyListener {
 
     //Variable Definition Section
     //Declare the variables used in the program
@@ -35,6 +37,7 @@ public class BasicGameApp implements Runnable {
 
     Stick stick;
     Image stickImage;
+
     BlueBlock BlueBlock;
     Image BlueBlockImage;
     BlueBlock[] BlueBlockArray;
@@ -78,6 +81,9 @@ public class BasicGameApp implements Runnable {
         YellowBlockArray = new YellowBlock[10];
         YellowBlockImage = Toolkit.getDefaultToolkit().getImage("YellowBlock.png");
 
+        stick = new Stick("stick", 450, 600);
+        stickImage = Toolkit.getDefaultToolkit().getImage("Stick.png");
+
         for (int x = 0; x < BlueBlockArray.length; x=x+1) {
                 BlueBlockArray[x] = new BlueBlock("BlueBlock" + 1, x*100, 0);
         }
@@ -112,7 +118,7 @@ public class BasicGameApp implements Runnable {
     }
 
     public void moveThings() {
-
+        stick.move();
     }
 
     //Paints things on the screen using bufferStrategy
@@ -121,12 +127,15 @@ public class BasicGameApp implements Runnable {
         g.clearRect(0, 0, WIDTH, HEIGHT);
         //draw the image
 
+        g.drawImage(stickImage, stick.xpos, stick.ypos, stick.width, stick.height, null);
+
         for (int x = 0; x < BlueBlockArray.length; x++) {
             g.drawImage(BlueBlockImage, BlueBlockArray[x].xpos, BlueBlockArray[x].ypos, BlueBlockArray[x].width, BlueBlockArray[x].height, null);
             g.drawImage(GreenBlockImage, GreenBlockArray[x].xpos, GreenBlockArray[x].ypos, GreenBlockArray[x].width, GreenBlockArray[x].height, null);
             g.drawImage(RedBlockImage, RedBlockArray[x].xpos, RedBlockArray[x].ypos, RedBlockArray[x].width, RedBlockArray[x].height, null);
             g.drawImage(YellowBlockImage, YellowBlockArray[x].xpos, YellowBlockArray[x].ypos, YellowBlockArray[x].width, YellowBlockArray[x].height, null);
         }
+
 
 
         g.dispose();
@@ -167,7 +176,35 @@ public class BasicGameApp implements Runnable {
         canvas.createBufferStrategy(2);
         bufferStrategy = canvas.getBufferStrategy();
         canvas.requestFocus();
+        canvas.addKeyListener(this);
         System.out.println("DONE graphic setup");
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyCode());
+        if(e.getKeyCode() == 37){
+            stick.dx = -20;
+        }
+        if(e.getKeyCode() == 39){
+            stick.dx = 20;
+        }
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode() == 37){
+            stick.dx = 0;
+        }
+        if(e.getKeyCode() == 39){
+            stick.dx = 0;
+        }
+
+    }
 }

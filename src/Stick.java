@@ -25,10 +25,10 @@ public class Stick {
         name = pName;
         xpos = pXpos;
         ypos = pYpos;
-        dx = 10;
-        dy = -10;
-        width = 100;
-        height = 100;
+        dx = 0;
+        dy = 0;
+        width = 200;
+        height = 50;
         isAlive = true;
         rect = new Rectangle(xpos, ypos, width, height);
         health = 100;
