@@ -37,12 +37,21 @@ public class BasicGameApp implements Runnable {
     Image stickImage;
     BlueBlock BlueBlock;
     Image BlueBlockImage;
+    BlueBlock[] BlueBlockArray;
+
     GreenBlock GreenBlock;
     Image GreenBlockImage;
+    GreenBlock[] GreenBlockArray;
+
     RedBlock RedBlock;
     Image RedBlockImage;
+    RedBlock[] RedBlockArray;
+
     YellowBlock YellowBlock;
     Image YellowBlockImage;
+    YellowBlock[] YellowBlockArray;
+
+
 
     // Main method definition
     // This is the code that runs first and automatically
@@ -55,23 +64,33 @@ public class BasicGameApp implements Runnable {
     // This section is the setup portion of the program
     // Initialize your variables and construct your program objects here.
     public BasicGameApp() { // BasicGameApp constructor
-
         setUpGraphics();
-        for(int y = 0;y<110;y=y+34) {
-            for (int x = 0; x <= 1000; x = x + 100) {
-                BlueBlock = new BlueBlock("BlueBlock.png", x, y);
-                BlueBlockImage = Toolkit.getDefaultToolkit().getImage("BlueBlock.png");
 
-                GreenBlock = new GreenBlock("GreenBlock.png", 100+x, y);
-                GreenBlockImage = Toolkit.getDefaultToolkit().getImage("Greenblock.png");
+        BlueBlockArray = new BlueBlock[10];
+        BlueBlockImage = Toolkit.getDefaultToolkit().getImage("BlueBlock.png");
 
-                RedBlock = new RedBlock("RedBlock.png", 200+x, y);
-                RedBlockImage = Toolkit.getDefaultToolkit().getImage("RedBlock.png");
+        GreenBlockArray = new GreenBlock[10];
+        GreenBlockImage = Toolkit.getDefaultToolkit().getImage("GreenBlock.png");
 
-                YellowBlock = new YellowBlock("YellowBlock.png", 300+x, y);
-                YellowBlockImage = Toolkit.getDefaultToolkit().getImage("YellowBlock.png");
-            }
+        RedBlockArray = new RedBlock[10];
+        RedBlockImage = Toolkit.getDefaultToolkit().getImage("RedBlock.png");
+
+        YellowBlockArray = new YellowBlock[10];
+        YellowBlockImage = Toolkit.getDefaultToolkit().getImage("YellowBlock.png");
+
+        for (int x = 0; x < BlueBlockArray.length; x=x+1) {
+                BlueBlockArray[x] = new BlueBlock("BlueBlock" + 1, x*100, 0);
         }
+        for (int x = 0; x < GreenBlockArray.length; x=x+1) {
+            GreenBlockArray[x] = new GreenBlock("GreenBlock" + 1, x*100, 34);
+        }
+        for (int x = 0; x < RedBlockArray.length; x=x+1) {
+            RedBlockArray[x] = new RedBlock("RedBlock" + 1, x*100, 68);
+        }
+        for (int x = 0; x < YellowBlockArray.length; x=x+1) {
+            YellowBlockArray[x] = new YellowBlock("YellowBlock" + 1, x*100, 102);
+        }
+
         run();
 
     } // end BasicGameApp constructor
@@ -101,10 +120,13 @@ public class BasicGameApp implements Runnable {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
         //draw the image
-        g.drawImage(BlueBlockImage, BlueBlock.xpos, BlueBlock.ypos, BlueBlock.width, BlueBlock.height, null);
-        g.drawImage(GreenBlockImage, GreenBlock.xpos, GreenBlock.ypos, GreenBlock.width, GreenBlock.height, null);
-        g.drawImage(RedBlockImage, RedBlock.xpos, RedBlock.ypos, RedBlock.width, RedBlock.height, null);
-        g.drawImage(YellowBlockImage, YellowBlock.xpos, YellowBlock.ypos, YellowBlock.width, YellowBlock.height, null);
+
+        for (int x = 0; x < BlueBlockArray.length; x++) {
+            g.drawImage(BlueBlockImage, BlueBlockArray[x].xpos, BlueBlockArray[x].ypos, BlueBlockArray[x].width, BlueBlockArray[x].height, null);
+            g.drawImage(GreenBlockImage, GreenBlockArray[x].xpos, GreenBlockArray[x].ypos, GreenBlockArray[x].width, GreenBlockArray[x].height, null);
+            g.drawImage(RedBlockImage, RedBlockArray[x].xpos, RedBlockArray[x].ypos, RedBlockArray[x].width, RedBlockArray[x].height, null);
+            g.drawImage(YellowBlockImage, YellowBlockArray[x].xpos, YellowBlockArray[x].ypos, YellowBlockArray[x].width, YellowBlockArray[x].height, null);
+        }
 
 
         g.dispose();
