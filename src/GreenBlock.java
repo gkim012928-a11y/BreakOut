@@ -17,6 +17,7 @@ public class GreenBlock {
     public int height;                //the height of the hero image
     public boolean isAlive;
     public Rectangle rect;
+    public int health;
 
     //This is a constructor that takes 3 parameters.
     // This allows us to specify the hero's name and position when we build it.
@@ -30,6 +31,7 @@ public class GreenBlock {
         height = 34;
         isAlive = true;
         rect = new Rectangle(xpos, ypos, width, height);
+        health = 1;
     }
 
     public void move() { // move

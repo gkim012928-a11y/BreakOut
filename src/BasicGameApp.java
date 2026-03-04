@@ -130,6 +130,8 @@ public class BasicGameApp implements Runnable, KeyListener {
         ball.bounce();
 
         ballStickCrash();
+        ballFloorCrash();
+        ballYellowCrash();
     }
 
     public void ballStickCrash(){
@@ -143,12 +145,18 @@ public class BasicGameApp implements Runnable, KeyListener {
         render();
     }
     public void ballFloorCrash(){
-        if(ball.rect.intersects(HEIGHT) && firstBallStick == true){
-            firstBallStick = false;
-            ball.dy = -ball.dy;
+        if(ball.ypos>=700-ball.height){
+            ball.dy = 0;
+            ball.dx = 0;
         }
-        if(ball.rect.intersects(stick.rect)){
-            firstBallStick = true;
+        render();
+    }
+    public void ballYellowCrash(){
+        for(int x = 0;x<YellowBlockArray.length;x=x+1) {
+            if (ball.rect.intersects(YellowBlockArray[x].rect) && YellowBlockArray[x].health > 0) {
+                ball.dy = -ball.dy;
+                YellowBlockArray[x].health = YellowBlockArray[x].health - 1;
+            }
         }
         render();
     }
@@ -168,14 +176,19 @@ public class BasicGameApp implements Runnable, KeyListener {
             g.drawImage(RedBlockImage, RedBlockArray[x].xpos, RedBlockArray[x].ypos, RedBlockArray[x].width, RedBlockArray[x].height, null);
             g.drawImage(YellowBlockImage, YellowBlockArray[x].xpos, YellowBlockArray[x].ypos, YellowBlockArray[x].width, YellowBlockArray[x].height, null);
         }
+        //Disappearing blocks
+//        for(int x = 0;x<=YellowBlockArray.length;x=x+1) {
+//            if (YellowBlockArray[x].health < 0) {
+//
+//            }
+//        }
 
         //write text --> make say you lost if it hits the bottom
-        g.setFont(new Font("Arial", Font.BOLD,37));
-        g.setColor(new Color(0,0,0));
-        g.drawString("Hello!", 450,500);
-
-
-
+        if(ball.ypos>=700-ball.height){
+            g.setFont(new Font("Arial", Font.BOLD,37));
+            g.setColor(new Color(0,0,0));
+            g.drawString("You Lost :(", 450,400);
+        }
 
         g.dispose();
         bufferStrategy.show();

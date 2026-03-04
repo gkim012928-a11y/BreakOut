@@ -17,6 +17,7 @@ public class RedBlock {
     public int height;                //the height of the hero image
     public boolean isAlive;           //a boolean to denote if the hero is alive or dead
     public Rectangle rect;
+    public int health;
 
 
     //This is a constructor that takes 3 parameters.
@@ -31,6 +32,7 @@ public class RedBlock {
         height = 34;
         isAlive = true;
         rect = new Rectangle(xpos, ypos, width, height);
+        health = 1;
     }
 
     public void move() { // move
