@@ -58,6 +58,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     YellowBlock[] YellowBlockArray;
 
     public boolean firstBallStick = true;
+    public boolean firstBallYellowCrash = true;
 
 
 
@@ -142,23 +143,24 @@ public class BasicGameApp implements Runnable, KeyListener {
         if(ball.rect.intersects(stick.rect)){
             firstBallStick = true;
         }
-        render();
     }
     public void ballFloorCrash(){
         if(ball.ypos>=700-ball.height){
             ball.dy = 0;
             ball.dx = 0;
         }
-        render();
     }
     public void ballYellowCrash(){
         for(int x = 0;x<YellowBlockArray.length;x=x+1) {
-            if (ball.rect.intersects(YellowBlockArray[x].rect) && YellowBlockArray[x].health > 0) {
+            if (ball.rect.intersects(YellowBlockArray[x].rect) && YellowBlockArray[x].health > 0 && firstBallYellowCrash) {
+                System.out.println(YellowBlockArray[x].health);
                 ball.dy = -ball.dy;
                 YellowBlockArray[x].health = YellowBlockArray[x].health - 1;
             }
+            if (!ball.rect.intersects(YellowBlockArray[x].rect)){
+                firstBallYellowCrash = false;
+            }
         }
-        render();
     }
 
     //Paints things on the screen using bufferStrategy
