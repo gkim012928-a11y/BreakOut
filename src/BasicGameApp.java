@@ -64,6 +64,9 @@ public class BasicGameApp implements Runnable, KeyListener {
 
     public boolean firstBallStick = true;
     public boolean firstBallYellowCrash = true;
+    public boolean firstBallRedCrash = true;
+    public boolean firstBallGreenCrash = true;
+    public boolean firstBallBlueCrash = true;
 
 
 
@@ -142,24 +145,34 @@ public class BasicGameApp implements Runnable, KeyListener {
         ballStickCrash();
         ballFloorCrash();
         ballYellowCrash();
+        ballBlueCrash();
+        ballGreenCrash();
+        ballRedCrash();
     }
 
     public void ballStickCrash(){
         if(ball.rect.intersects(stick.rect) && firstBallStick == true){
             firstBallStick = false;
-            int randNum = (int) (Math.random()*40);
+            int randNum = (int) (Math.random()*50);
 
             if(randNum<10){
                 ball.dy = -ball.dy;
             }
             else if(randNum < 20){
-                stick.xpos = 100;
+                ball.dy = -ball.dy;
+                stick.xpos = 0;
             }
             else if(randNum < 30){
-                ball.dy = randNum-5;
+                ball.dy = -randNum+4;
+                ball.dx = randNum-4;
             }
-            else if(randNum <=40){
-                stick.xpos = 400;
+            else if(randNum <40){
+                ball.dy = -10;
+                ball.dx = 10;
+            }
+            else if(randNum <=50){
+                ball.dy = -ball.dy;
+                stick.xpos = 700;
             }
 
         }
@@ -175,13 +188,55 @@ public class BasicGameApp implements Runnable, KeyListener {
     }
     public void ballYellowCrash(){
         for(int x = 0;x<YellowBlockArray.length;x=x+1) {
-            if (ball.rect.intersects(YellowBlockArray[x].rect) && YellowBlockArray[x].health > 0 && firstBallYellowCrash) {
+            if (ball.rect.intersects(YellowBlockArray[x].rect) && YellowBlockArray[x].health > 0 && firstBallYellowCrash == true) {
+                firstBallYellowCrash = false;
                 System.out.println(YellowBlockArray[x].health);
                 ball.dy = -ball.dy;
                 YellowBlockArray[x].health = YellowBlockArray[x].health - 1;
             }
             if (!ball.rect.intersects(YellowBlockArray[x].rect)){
-                firstBallYellowCrash = false;
+                firstBallYellowCrash = true;
+            }
+        }
+    }
+
+    public void ballBlueCrash(){
+        for(int x = 0;x<BlueBlockArray.length;x=x+1) {
+            if (ball.rect.intersects(BlueBlockArray[x].rect) && BlueBlockArray[x].health > 0 && firstBallBlueCrash == true) {
+                firstBallBlueCrash = false;
+                ball.dy = -ball.dy;
+                BlueBlockArray[x].health = BlueBlockArray[x].health - 1;
+            }
+            if (!ball.rect.intersects(BlueBlockArray[x].rect)){
+                firstBallBlueCrash = true;
+            }
+        }
+    }
+
+    public void ballRedCrash(){
+        for(int x = 0;x<RedBlockArray.length;x=x+1) {
+            if (ball.rect.intersects(RedBlockArray[x].rect) && RedBlockArray[x].health > 0 && firstBallRedCrash == true) {
+                firstBallRedCrash = false;
+                System.out.println(RedBlockArray[x].health);
+                ball.dy = -ball.dy;
+                RedBlockArray[x].health = RedBlockArray[x].health - 1;
+            }
+            if (!ball.rect.intersects(RedBlockArray[x].rect)){
+                firstBallRedCrash = true;
+            }
+        }
+    }
+
+    public void ballGreenCrash(){
+        for(int x = 0;x<GreenBlockArray.length;x=x+1) {
+            if (ball.rect.intersects(GreenBlockArray[x].rect) && GreenBlockArray[x].health > 0 && firstBallGreenCrash == true) {
+                firstBallGreenCrash = false;
+                System.out.println(GreenBlockArray[x].health);
+                ball.dy = -ball.dy;
+                GreenBlockArray[x].health = GreenBlockArray[x].health - 1;
+            }
+            if (!ball.rect.intersects(GreenBlockArray[x].rect)){
+                firstBallGreenCrash = true;
             }
         }
     }
@@ -197,12 +252,28 @@ public class BasicGameApp implements Runnable, KeyListener {
         g.drawImage(ballImage, ball.xpos, ball.ypos, ball.width, ball.height, null);
         g.drawImage(BasketBallImage, basketBallJesus.xpos, basketBallJesus.ypos, basketBallJesus.width, basketBallJesus.height, null);
 
+        for (int x = 0; x < BlueBlockArray.length; x++) {
+        if(YellowBlockArray[x].health > 0){
+            g.drawImage(YellowBlockImage, YellowBlockArray[x].xpos, YellowBlockArray[x].ypos, YellowBlockArray[x].width, YellowBlockArray[x].height, null);
+            }
+        }
 
         for (int x = 0; x < BlueBlockArray.length; x++) {
-            g.drawImage(BlueBlockImage, BlueBlockArray[x].xpos, BlueBlockArray[x].ypos, BlueBlockArray[x].width, BlueBlockArray[x].height, null);
-            g.drawImage(GreenBlockImage, GreenBlockArray[x].xpos, GreenBlockArray[x].ypos, GreenBlockArray[x].width, GreenBlockArray[x].height, null);
-            g.drawImage(RedBlockImage, RedBlockArray[x].xpos, RedBlockArray[x].ypos, RedBlockArray[x].width, RedBlockArray[x].height, null);
-            g.drawImage(YellowBlockImage, YellowBlockArray[x].xpos, YellowBlockArray[x].ypos, YellowBlockArray[x].width, YellowBlockArray[x].height, null);
+            if(BlueBlockArray[x].health > 0){
+                g.drawImage(BlueBlockImage, BlueBlockArray[x].xpos, BlueBlockArray[x].ypos, BlueBlockArray[x].width, BlueBlockArray[x].height, null);
+            }
+        }
+
+        for (int x = 0; x < BlueBlockArray.length; x++) {
+            if(RedBlockArray[x].health > 0){
+                g.drawImage(RedBlockImage, RedBlockArray[x].xpos, RedBlockArray[x].ypos, RedBlockArray[x].width, RedBlockArray[x].height, null);
+            }
+        }
+
+        for (int x = 0; x < BlueBlockArray.length; x++) {
+            if(GreenBlockArray[x].health > 0){
+                g.drawImage(GreenBlockImage, GreenBlockArray[x].xpos, GreenBlockArray[x].ypos, GreenBlockArray[x].width, GreenBlockArray[x].height, null);
+            }
         }
         //Disappearing blocks
 //        for(int x = 0;x<=YellowBlockArray.length;x=x+1) {
@@ -214,8 +285,15 @@ public class BasicGameApp implements Runnable, KeyListener {
         //write text --> make say you lost if it hits the bottom
         if(ball.ypos>=700-ball.height){
             g.setFont(new Font("Arial", Font.BOLD,37));
-            g.setColor(new Color(0,0,0));
+            g.setColor(new Color(255,0,0));
             g.drawString("You Lost :(", 450,400);
+        }
+        if(ball.ypos<=0){
+            ball.dy = 0;
+            ball.dx = 0;
+            g.setFont(new Font("Arial", Font.BOLD,50));
+            g.setColor(new Color(255,0,0));
+            g.drawString("You Won :D", 430,400);
         }
 
         g.dispose();
@@ -269,10 +347,10 @@ public class BasicGameApp implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         System.out.println(e.getKeyCode());
         if(e.getKeyCode() == 37){//left
-            stick.dx = -20;
+            stick.dx = -25;
         }
         if(e.getKeyCode() == 39){//right
-            stick.dx = 20;
+            stick.dx = 25;
         }
 
         if(e.getKeyCode() == 87){ //up
@@ -286,6 +364,15 @@ public class BasicGameApp implements Runnable, KeyListener {
         }
         if(e.getKeyCode() == 68){//right
             basketBallJesus.dx = 20;
+        }
+
+        if(e.getKeyCode() == 69){ //bigger
+            basketBallJesus.height = basketBallJesus.height + 5;
+            basketBallJesus.width = basketBallJesus.width + 5;
+        }
+        if(e.getKeyCode() == 81){ //bigger
+            basketBallJesus.height = basketBallJesus.height - 5;
+            basketBallJesus.width = basketBallJesus.width - 5;
         }
 
     }

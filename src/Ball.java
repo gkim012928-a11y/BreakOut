@@ -52,9 +52,6 @@ public class Ball {
         if(xpos<=0){
             dx = -dx;
         }
-        else if(ypos<=0){
-            dy=-dy;
-        }
     }
 
     public void wrap() {
