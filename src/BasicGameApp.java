@@ -57,6 +57,11 @@ public class BasicGameApp implements Runnable, KeyListener {
     Image YellowBlockImage;
     YellowBlock[] YellowBlockArray;
 
+    BasketBallJesus basketBallJesus;
+    Image BasketBallImage;
+
+    Image forest = Toolkit.getDefaultToolkit().getImage("Forest.jpg");
+
     public boolean firstBallStick = true;
     public boolean firstBallYellowCrash = true;
 
@@ -92,6 +97,9 @@ public class BasicGameApp implements Runnable, KeyListener {
 
         ball = new Ball("wesley", 500,500);
         ballImage = Toolkit.getDefaultToolkit().getImage("Wesley.png");
+
+        basketBallJesus = new BasketBallJesus("Jesus", 500,500);
+        BasketBallImage = Toolkit.getDefaultToolkit().getImage("BasketBallJesus.jpg");
 
         for (int x = 0; x < BlueBlockArray.length; x=x+1) {
                 BlueBlockArray[x] = new BlueBlock("BlueBlock" + 1, x*100, 0);
@@ -129,6 +137,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     public void moveThings() {
         stick.move();
         ball.bounce();
+        basketBallJesus.move();
 
         ballStickCrash();
         ballFloorCrash();
@@ -138,7 +147,21 @@ public class BasicGameApp implements Runnable, KeyListener {
     public void ballStickCrash(){
         if(ball.rect.intersects(stick.rect) && firstBallStick == true){
             firstBallStick = false;
-            ball.dy = -ball.dy;
+            int randNum = (int) (Math.random()*40);
+
+            if(randNum<10){
+                ball.dy = -ball.dy;
+            }
+            else if(randNum < 20){
+                stick.xpos = 100;
+            }
+            else if(randNum < 30){
+                ball.dy = randNum-5;
+            }
+            else if(randNum <=40){
+                stick.xpos = 400;
+            }
+
         }
         if(ball.rect.intersects(stick.rect)){
             firstBallStick = true;
@@ -168,9 +191,12 @@ public class BasicGameApp implements Runnable, KeyListener {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
         //draw the image
+        g.drawImage(forest, 0, 0, WIDTH, HEIGHT, null);
 
         g.drawImage(stickImage, stick.xpos, stick.ypos, stick.width, stick.height, null);
         g.drawImage(ballImage, ball.xpos, ball.ypos, ball.width, ball.height, null);
+        g.drawImage(BasketBallImage, basketBallJesus.xpos, basketBallJesus.ypos, basketBallJesus.width, basketBallJesus.height, null);
+
 
         for (int x = 0; x < BlueBlockArray.length; x++) {
             g.drawImage(BlueBlockImage, BlueBlockArray[x].xpos, BlueBlockArray[x].ypos, BlueBlockArray[x].width, BlueBlockArray[x].height, null);
@@ -242,11 +268,24 @@ public class BasicGameApp implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println(e.getKeyCode());
-        if(e.getKeyCode() == 37){
+        if(e.getKeyCode() == 37){//left
             stick.dx = -20;
         }
-        if(e.getKeyCode() == 39){
+        if(e.getKeyCode() == 39){//right
             stick.dx = 20;
+        }
+
+        if(e.getKeyCode() == 87){ //up
+            basketBallJesus.dy = -20;
+        }
+        if(e.getKeyCode() == 83){//down
+            basketBallJesus.dy = 20;
+        }
+        if(e.getKeyCode() == 65){//left
+            basketBallJesus.dx = -20;
+        }
+        if(e.getKeyCode() == 68){//right
+            basketBallJesus.dx = 20;
         }
 
     }
@@ -258,6 +297,19 @@ public class BasicGameApp implements Runnable, KeyListener {
         }
         if(e.getKeyCode() == 39){
             stick.dx = 0;
+        }
+
+        if(e.getKeyCode() == 87){ //up
+            basketBallJesus.dy = 0;
+        }
+        if(e.getKeyCode() == 83){//down
+            basketBallJesus.dy = 0;
+        }
+        if(e.getKeyCode() == 65){//left
+            basketBallJesus.dx = 0;
+        }
+        if(e.getKeyCode() == 68){//right
+            basketBallJesus.dx = 0;
         }
 
     }
