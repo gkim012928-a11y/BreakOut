@@ -60,8 +60,9 @@ public class BasicGameApp implements Runnable, KeyListener {
     BasketBallJesus basketBallJesus;
     Image BasketBallImage;
 
-    Image forest = Toolkit.getDefaultToolkit().getImage("Forest.jpg");
+    Image forest = Toolkit.getDefaultToolkit().getImage("Forest.jpg"); // background
 
+    //To make check crash methods work
     public boolean firstBallStick = true;
     public boolean firstBallYellowCrash = true;
     public boolean firstBallRedCrash = true;
@@ -104,6 +105,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         basketBallJesus = new BasketBallJesus("Jesus", 500,500);
         BasketBallImage = Toolkit.getDefaultToolkit().getImage("BasketBallJesus.jpg");
 
+        // creates block rows
         for (int x = 0; x < BlueBlockArray.length; x=x+1) {
                 BlueBlockArray[x] = new BlueBlock("BlueBlock" + 1, x*100, 0);
         }
@@ -151,32 +153,32 @@ public class BasicGameApp implements Runnable, KeyListener {
     }
 
     public void ballStickCrash(){
-        if(ball.rect.intersects(stick.rect) && firstBallStick == true){
+        if(ball.rect.intersects(stick.rect) && firstBallStick == true){ // bounce ball off stick with twist
             firstBallStick = false;
             int randNum = (int) (Math.random()*50);
 
-            if(randNum<10){
+            if(randNum<10){             //Makes ball just bounce
                 ball.dy = -ball.dy;
             }
-            else if(randNum < 20){
+            else if(randNum < 20){      //Makes ball just bounce and makes stick teleport
                 ball.dy = -ball.dy;
                 stick.xpos = 0;
             }
-            else if(randNum < 30){
-                ball.dy = -randNum+4;
-                ball.dx = randNum-4;
-            }
-            else if(randNum <40){
-                ball.dy = -10;
-                ball.dx = 10;
-            }
-            else if(randNum <=50){
+            else if(randNum < 30){      //Makes ball just bounce and makes stick teleport
                 ball.dy = -ball.dy;
                 stick.xpos = 700;
             }
+            else if(randNum <40){       //Makes ball bounce but at default speed(counteracts sped up one(below))
+                ball.dy = -10;
+                ball.dx = 10;
+            }
+            else if(randNum <=50){      //speeds ball up(makes harder)
+                ball.dy = -randNum+4;
+                ball.dx = randNum-4;
+            }
 
         }
-        if(ball.rect.intersects(stick.rect)){
+        if(!ball.rect.intersects(stick.rect)){
             firstBallStick = true;
         }
     }
@@ -288,6 +290,7 @@ public class BasicGameApp implements Runnable, KeyListener {
             g.setColor(new Color(255,0,0));
             g.drawString("You Lost :(", 450,400);
         }
+        //says you won when hitting top(get through all blocks first)
         if(ball.ypos<=0){
             ball.dy = 0;
             ball.dx = 0;
@@ -345,6 +348,8 @@ public class BasicGameApp implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+
+        //stick movement(only lateral because I don't want it moving up or down)
         System.out.println(e.getKeyCode());
         if(e.getKeyCode() == 37){//left
             stick.dx = -25;
@@ -353,6 +358,7 @@ public class BasicGameApp implements Runnable, KeyListener {
             stick.dx = 25;
         }
 
+        //BasketBallJesus Movement
         if(e.getKeyCode() == 87){ //up
             basketBallJesus.dy = -20;
         }
@@ -366,6 +372,7 @@ public class BasicGameApp implements Runnable, KeyListener {
             basketBallJesus.dx = 20;
         }
 
+        //Makes BasketBall Jesus get bigger
         if(e.getKeyCode() == 69){ //bigger
             basketBallJesus.height = basketBallJesus.height + 5;
             basketBallJesus.width = basketBallJesus.width + 5;
@@ -379,6 +386,8 @@ public class BasicGameApp implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+        //Stick stops movement
         if(e.getKeyCode() == 37){
             stick.dx = 0;
         }
@@ -386,6 +395,7 @@ public class BasicGameApp implements Runnable, KeyListener {
             stick.dx = 0;
         }
 
+        //BasketBallJesus stops movement
         if(e.getKeyCode() == 87){ //up
             basketBallJesus.dy = 0;
         }
