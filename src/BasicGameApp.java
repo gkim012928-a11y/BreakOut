@@ -106,16 +106,24 @@ public class BasicGameApp implements Runnable, KeyListener {
 
         // creates block rows
         for (int x = 0; x < BlueBlockArray.length; x = x + 1) {
+            int randNum = (int) (Math.random()*3);
             BlueBlockArray[x] = new BlueBlock("BlueBlock" + 1, x * 100, 0);
+            BlueBlockArray[x].health = BlueBlockArray[x].health + randNum;
         }
         for (int x = 0; x < GreenBlockArray.length; x = x + 1) {
+            int randNum = (int) (Math.random()*3);
             GreenBlockArray[x] = new GreenBlock("GreenBlock" + 1, x * 100, 34);
+            GreenBlockArray[x].health = GreenBlockArray[x].health + randNum;
         }
         for (int x = 0; x < RedBlockArray.length; x = x + 1) {
+            int randNum = (int) (Math.random()*3);
             RedBlockArray[x] = new RedBlock("RedBlock" + 1, x * 100, 68);
+            RedBlockArray[x].health = RedBlockArray[x].health + randNum;
         }
         for (int x = 0; x < YellowBlockArray.length; x = x + 1) {
+            int randNum = (int) (Math.random()*3);
             YellowBlockArray[x] = new YellowBlock("YellowBlock" + 1, x * 100, 102);
+            YellowBlockArray[x].health = YellowBlockArray[x].health + randNum;
         }
 
         run();
@@ -154,7 +162,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     public void ballStickCrash() {
         if (ball.rect.intersects(stick.rect) && firstBallStick == true) { // bounce ball off stick with twist
             firstBallStick = false;
-            int randNum = (int) (Math.random() * 50);
+            int randNum = (int) (Math.random() * 25);
 
             if (randNum < 10) {             //Makes ball just bounce
                 ball.dy = -ball.dy;
@@ -353,6 +361,9 @@ public class BasicGameApp implements Runnable, KeyListener {
         } catch (InterruptedException e) {
         }
     }
+    public void restart(){
+        render();
+    }
 
     //Graphics setup method
     private void setUpGraphics() {
@@ -425,6 +436,48 @@ public class BasicGameApp implements Runnable, KeyListener {
             basketBallJesus.width = basketBallJesus.width - 5;
         }
 
+        if(ball.dx == 0 && ball.dy ==0 && e.getKeyCode() == 82){ //restart
+            setUpGraphics();
+
+            BlueBlockArray = new BlueBlock[10];
+            BlueBlockImage = Toolkit.getDefaultToolkit().getImage("BlueBlock.png");
+
+            GreenBlockArray = new GreenBlock[10];
+            GreenBlockImage = Toolkit.getDefaultToolkit().getImage("GreenBlock.png");
+
+            RedBlockArray = new RedBlock[10];
+            RedBlockImage = Toolkit.getDefaultToolkit().getImage("RedBlock.png");
+
+            YellowBlockArray = new YellowBlock[10];
+            YellowBlockImage = Toolkit.getDefaultToolkit().getImage("YellowBlock.png");
+
+            stick = new Stick("stick", 450, 600);
+            stickImage = Toolkit.getDefaultToolkit().getImage("Stick.png");
+
+            ball = new Ball("wesley", 500, 500);
+            ballImage = Toolkit.getDefaultToolkit().getImage("Wesley.png");
+
+            basketBallJesus = new BasketBallJesus("Jesus", 500, 500);
+            BasketBallImage = Toolkit.getDefaultToolkit().getImage("BasketBallJesus.jpg");
+
+            // creates block rows
+            for (int x = 0; x < BlueBlockArray.length; x = x + 1) {
+                BlueBlockArray[x] = new BlueBlock("BlueBlock" + 1, x * 100, 0);
+            }
+            for (int x = 0; x < GreenBlockArray.length; x = x + 1) {
+                GreenBlockArray[x] = new GreenBlock("GreenBlock" + 1, x * 100, 34);
+            }
+            for (int x = 0; x < RedBlockArray.length; x = x + 1) {
+                RedBlockArray[x] = new RedBlock("RedBlock" + 1, x * 100, 68);
+            }
+            for (int x = 0; x < YellowBlockArray.length; x = x + 1) {
+                YellowBlockArray[x] = new YellowBlock("YellowBlock" + 1, x * 100, 102);
+            }
+
+            run();
+
+        }
+
     }
 
     @Override
@@ -450,6 +503,11 @@ public class BasicGameApp implements Runnable, KeyListener {
         }
         if(e.getKeyCode() == 68){//right
             basketBallJesus.dx = 0;
+        }
+
+        if(e.getKeyCode() == 82){ //restart
+
+            render();
         }
 
     }
