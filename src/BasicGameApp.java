@@ -119,8 +119,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             RedBlockArray[x].health = RedBlockArray[x].health + randNum;
         }
         for (int x = 0; x < ballArray.length; x = x + 1) {
-            int randNum = (int) (Math.random()*3);
-            ballArray[x] = new Ball("wesley" + 1, 0, 34);
+            ballArray[x] = new Ball("wesley" + 1, 400, 550);
         }
 
         run();
@@ -145,7 +144,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     public void moveThings() {
         stick.move();
-        ball.bounce();
+        ballArray[1].bounce();
         basketBallJesus.move();
 
         ballStickCrash();
@@ -157,36 +156,41 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     }
 
     public void ballStickCrash() {
-        if (ball.rect.intersects(stick.rect) && firstBallStick == true) { // bounce ball off stick with twist
-            firstBallStick = false;
-            int randNum = (int) (Math.random() * 25);
+        for(int i = 0; i<ballArray.length; i++) {
+            if (ballArray[i].rect.intersects(stick.rect) && firstBallStick == true) { // bounce ball off stick with twist
+                firstBallStick = false;
+                int randNum = (int) (Math.random() * 25);
 
-            if (randNum < 10) {             //Makes ball just bounce
-                ball.dy = -ball.dy;
-            } else if (randNum < 20) {      //Makes ball just bounce and makes stick teleport
-                ball.dy = -ball.dy;
-                stick.xpos = 0;
-            } else if (randNum < 30) {      //Makes ball just bounce and makes stick teleport
-                ball.dy = -ball.dy;
-                stick.xpos = 700;
-            } else if (randNum < 40) {       //Makes ball bounce but at default speed(counteracts sped up one(below))
-                ball.dy = -10;
-                ball.dx = 10;
-            } else if (randNum <= 50) {      //speeds ball up(makes harder)
-                ball.dy = -randNum + 7;
-                ball.dx = randNum - 7;
+                if (randNum < 10) {             //Makes ball just bounce
+                    ballArray[i].dy = -ballArray[i].dy;
+                } else if (randNum < 20) {      //Makes ball just bounce and makes stick teleport
+                    ballArray[i].dy = -ballArray[i].dy;
+                    stick.xpos = 0;
+                } else if (randNum < 30) {      //Makes ball just bounce and makes stick teleport
+                    ballArray[i].dy = -ballArray[i].dy;
+                    stick.xpos = 700;
+                } else if (randNum < 40) {       //Makes ball bounce but at default speed(counteracts sped up one(below))
+                    ballArray[i].dy = -10;
+                    ballArray[i].dx = 10;
+                } else if (randNum <= 50) {      //speeds ball up(makes harder)
+                    ballArray[i].dy = -randNum + 7;
+                    ballArray[i].dx = randNum - 7;
+                }
+
             }
-
-        }
-        if (!ball.rect.intersects(stick.rect)) {
-            firstBallStick = true;
+            if (!ballArray[i].rect.intersects(stick.rect)) {
+                firstBallStick = true;
+            }
         }
     }
 
     public void ballFloorCrash() {
-        if (ball.ypos >= 700 - ball.height) {
-            ball.dy = 0;
-            ball.dx = 0;
+        for(int i = 0; i<ballArray.length;i++) {
+            if (ballArray[i].ypos >= 700 - ballArray[i].height) {
+                ballArray[i].dy = 0;
+                ballArray[i].dx = 0;
+                //how do I clear it
+            }
         }
     }
 
@@ -205,28 +209,32 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 //    }
 
     public void ballBlueCrash() {
-        for (int x = 0; x < BlueBlockArray.length; x = x + 1) {
-            if (ball.rect.intersects(BlueBlockArray[x].rect) && BlueBlockArray[x].health > 0 && firstBallBlueCrash == true) {
-                firstBallBlueCrash = false;
-                ball.dy = -ball.dy;
-                BlueBlockArray[x].health = BlueBlockArray[x].health - 1;
-            }
-            if (!ball.rect.intersects(BlueBlockArray[x].rect)) {
-                firstBallBlueCrash = true;
+        for(int i = 0; i<ballArray.length; i++) {
+            for (int x = 0; x < BlueBlockArray.length; x = x + 1) {
+                if (ballArray[i].rect.intersects(BlueBlockArray[x].rect) && BlueBlockArray[x].health > 0 && firstBallBlueCrash == true) {
+                    firstBallBlueCrash = false;
+                    ballArray[i].dy = -ballArray[i].dy;
+                    BlueBlockArray[x].health = BlueBlockArray[x].health - 1;
+                }
+                if (!ballArray[i].rect.intersects(BlueBlockArray[x].rect)) {
+                    firstBallBlueCrash = true;
+                }
             }
         }
     }
 
     public void ballRedCrash() {
-        for (int x = 0; x < RedBlockArray.length; x = x + 1) {
-            if (ball.rect.intersects(RedBlockArray[x].rect) && RedBlockArray[x].health > 0 && firstBallRedCrash == true) {
-                firstBallRedCrash = false;
-                System.out.println(RedBlockArray[x].health);
-                ball.dy = -ball.dy;
-                RedBlockArray[x].health = RedBlockArray[x].health - 1;
-            }
-            if (!ball.rect.intersects(RedBlockArray[x].rect)) {
-                firstBallRedCrash = true;
+        for(int i = 0; i<ballArray.length; i++) {
+            for (int x = 0; x < RedBlockArray.length; x = x + 1) {
+                if (ballArray[i].rect.intersects(RedBlockArray[x].rect) && RedBlockArray[x].health > 0 && firstBallRedCrash == true) {
+                    firstBallRedCrash = false;
+                    System.out.println(RedBlockArray[x].health);
+                    ballArray[i].dy = -ballArray[i].dy;
+                    RedBlockArray[x].health = RedBlockArray[x].health - 1;
+                }
+                if (!ballArray[i].rect.intersects(RedBlockArray[x].rect)) {
+                    firstBallRedCrash = true;
+                }
             }
         }
     }
@@ -253,8 +261,13 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         g.drawImage(forest, 0, 0, WIDTH, HEIGHT, null);
 
         g.drawImage(stickImage, stick.xpos, stick.ypos, stick.width, stick.height, null);
-        g.drawImage(ballImage, ball.xpos, ball.ypos, ball.width, ball.height, null);
         g.drawImage(BasketBallImage, basketBallJesus.xpos, basketBallJesus.ypos, basketBallJesus.width, basketBallJesus.height, null);
+
+        for(int i = 0;i<ballArray.length;i++){
+            if(ballArray[i].dx > 0 && ballArray[i].dy > 0){
+                g.drawImage(ballImage, ballArray[i].xpos, ballArray[i].ypos, ballArray[i].width, ballArray[i].height, null);
+            }
+        }
 
         for (int x = 0; x < BlueBlockArray.length; x++) {
             if (BlueBlockArray[x].health > 0) {
@@ -275,18 +288,22 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 //        }
 
         //write text --> make say you lost if it hits the bottom
-        if (ball.ypos >= 700 - ball.height) {
+        for(int i=0;i<ballArray.length; i++){
+        if (ballArray[i].ypos >= 700 - ballArray[i].height) {
             g.setFont(new Font("Arial", Font.BOLD, 37));
             g.setColor(new Color(255, 0, 0));
             g.drawString("You Lost :(", 450, 400);
         }
+        }
         //says you won when hitting top(get through all blocks first)
-        if (ball.ypos <= 0) {
-            ball.dy = 0;
-            ball.dx = 0;
+        for(int i = 0; i<ballArray.length; i++){
+        if (ballArray[i].ypos <= 0) {
+            ballArray[i].dy = 0;
+            ballArray[i].dx = 0;
             g.setFont(new Font("Arial", Font.BOLD, 50));
             g.setColor(new Color(0, 0, 0));
             g.drawString("You Won :D", 430, 400);
+        }
         }
 
         for (int x = 0; x < BlueBlockArray.length; x = x + 1) {
