@@ -119,7 +119,9 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             RedBlockArray[x].health = RedBlockArray[x].health + randNum;
         }
         for (int x = 0; x < ballArray.length; x = x + 1) {
-            ballArray[x] = new Ball("wesley" + 1, 400, 550);
+            int randX = (int) ((Math.random()*400)+100);
+            int randY = (int) ((Math.random()*350)+100);
+            ballArray[x] = new Ball("wesley" + 1, randX, randY);
         }
 
         run();
@@ -148,7 +150,6 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         basketBallJesus.move();
 
         ballStickCrash();
-        ballFloorCrash();
 //        ballYellowCrash();
         ballBlueCrash();
 //        ballGreenCrash();
@@ -180,16 +181,6 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             }
             if (!ballArray[i].rect.intersects(stick.rect)) {
                 firstBallStick = true;
-            }
-        }
-    }
-
-    public void ballFloorCrash() {
-        for(int i = 0; i<ballArray.length;i++) {
-            if (ballArray[i].ypos >= 700 - ballArray[i].height) {
-                ballArray[i].dy = 0;
-                ballArray[i].dx = 0;
-                //how do I clear it
             }
         }
     }
@@ -264,7 +255,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         g.drawImage(BasketBallImage, basketBallJesus.xpos, basketBallJesus.ypos, basketBallJesus.width, basketBallJesus.height, null);
 
         for(int i = 0;i<ballArray.length;i++){
-            if(ballArray[i].dx > 0 && ballArray[i].dy > 0){
+            if(ballArray[i].ypos >= 700 - ballArray[i].height){
                 g.drawImage(ballImage, ballArray[i].xpos, ballArray[i].ypos, ballArray[i].width, ballArray[i].height, null);
             }
         }
@@ -441,43 +432,6 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         if(ball.dx == 0 && ball.dy ==0 && e.getKeyCode() == 82){ //restart
             setUpGraphics();
 
-            BlueBlockArray = new BlueBlock[10];
-            BlueBlockImage = Toolkit.getDefaultToolkit().getImage("BlueBlock.png");
-
-            GreenBlockArray = new GreenBlock[10];
-            GreenBlockImage = Toolkit.getDefaultToolkit().getImage("GreenBlock.png");
-
-            RedBlockArray = new RedBlock[10];
-            RedBlockImage = Toolkit.getDefaultToolkit().getImage("RedBlock.png");
-
-            YellowBlockArray = new YellowBlock[10];
-            YellowBlockImage = Toolkit.getDefaultToolkit().getImage("YellowBlock.png");
-
-            stick = new Stick("stick", 450, 600);
-            stickImage = Toolkit.getDefaultToolkit().getImage("Stick.png");
-
-            ball = new Ball("wesley", 500, 500);
-            ballImage = Toolkit.getDefaultToolkit().getImage("Wesley.png");
-
-            basketBallJesus = new BasketBallJesus("Jesus", 500, 500);
-            BasketBallImage = Toolkit.getDefaultToolkit().getImage("BasketBallJesus.jpg");
-
-            // creates block rows
-            for (int x = 0; x < BlueBlockArray.length; x = x + 1) {
-                BlueBlockArray[x] = new BlueBlock("BlueBlock" + 1, x * 100, 0);
-            }
-            for (int x = 0; x < GreenBlockArray.length; x = x + 1) {
-                GreenBlockArray[x] = new GreenBlock("GreenBlock" + 1, x * 100, 34);
-            }
-            for (int x = 0; x < RedBlockArray.length; x = x + 1) {
-                RedBlockArray[x] = new RedBlock("RedBlock" + 1, x * 100, 68);
-            }
-            for (int x = 0; x < YellowBlockArray.length; x = x + 1) {
-                YellowBlockArray[x] = new YellowBlock("YellowBlock" + 1, x * 100, 102);
-            }
-
-            run();
-
         }
 
     }
@@ -516,9 +470,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() < 30) {
-            stick.dx = stick.dx+1;
-        }
+
     }
 
     @Override
