@@ -46,12 +46,16 @@ public class Ball {
         if(xpos>=1000-width){
             dx = -dx;
         }
-        else if(ypos>=700+height){
-            dy = 0;
+        if(ypos<=0){
+            dy = -dy;
         }
         if(xpos<=0){
             dx = -dx;
         }
+        // use this to easily show how to win because it will bounce off the floor and will guarantee all blocks to be broken with litte effort
+//        if(ypos > 700){
+//            dy = -dy;
+//        }
     }
 
     public void wrap() {

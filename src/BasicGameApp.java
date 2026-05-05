@@ -74,6 +74,10 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     public int ballCount = 1;
 
+    public int totalsum;
+
+    public boolean gameFinish = false;
+
 
     // Main method definition
     // This is the code that runs first and automatically
@@ -158,6 +162,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         ballBlueCrash();
 //        ballGreenCrash();
         ballRedCrash();
+        aveHealth();
     }
 
     public void ballStickCrash() {
@@ -233,6 +238,13 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             }
         }
     }
+    public void aveHealth(){
+        totalsum = 0;
+        for(int i=0;i<BlueBlockArray.length;i++){
+            totalsum = totalsum + BlueBlockArray[i].health + RedBlockArray[i].health;
+
+        }
+    }
 
 //    public void ballGreenCrash() {
 //        for (int x = 0; x < GreenBlockArray.length; x = x + 1) {
@@ -295,16 +307,14 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             g.drawString("You Lost :(", 450, 400);
         }
         //says you won when hitting top(get through all blocks first)
-        boolean gameFinish = false;
-        for(int i=0;i<ballCount; i++){
-            if (ballArray[i].ypos < 700) {
-                gameFinish = true;
-            }
-        }
-        if (!gameFinish){
+        if (totalsum == 0){
             g.setFont(new Font("Arial", Font.BOLD, 37));
             g.setColor(new Color(255, 0, 0));
             g.drawString("You Won :D", 450, 400);
+            for(int x=0; x<ballArray.length;x++){
+                ballArray[x].dx = 0;
+                ballArray[x].dy = 0;
+            }
         }
 
         for (int x = 0; x < BlueBlockArray.length; x = x + 1) {
