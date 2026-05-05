@@ -46,8 +46,8 @@ public class Ball {
         if(xpos>=1000-width){
             dx = -dx;
         }
-        else if(ypos>=700-height){
-            dy=-dy;
+        else if(ypos>=700+height){
+            dy = 0;
         }
         if(xpos<=0){
             dx = -dx;

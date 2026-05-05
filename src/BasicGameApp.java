@@ -72,6 +72,8 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public boolean firstBallGreenCrash = true;
     public boolean firstBallBlueCrash = true;
 
+    public int ballCount = 1;
+
 
     // Main method definition
     // This is the code that runs first and automatically
@@ -146,7 +148,9 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     public void moveThings() {
         stick.move();
-        ballArray[1].bounce();
+        for(int i = 0; i < ballCount; i++){
+            ballArray[i].bounce();
+        }
         basketBallJesus.move();
 
         ballStickCrash();
@@ -254,8 +258,8 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         g.drawImage(stickImage, stick.xpos, stick.ypos, stick.width, stick.height, null);
         g.drawImage(BasketBallImage, basketBallJesus.xpos, basketBallJesus.ypos, basketBallJesus.width, basketBallJesus.height, null);
 
-        for(int i = 0;i<ballArray.length;i++){
-            if(ballArray[i].ypos >= 700 - ballArray[i].height){
+        for(int i = 0;i<ballCount;i++){
+            if(ballArray[i].ypos < 700 - ballArray[i].height){
                 g.drawImage(ballImage, ballArray[i].xpos, ballArray[i].ypos, ballArray[i].width, ballArray[i].height, null);
             }
         }
@@ -279,22 +283,28 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 //        }
 
         //write text --> make say you lost if it hits the bottom
-        for(int i=0;i<ballArray.length; i++){
-        if (ballArray[i].ypos >= 700 - ballArray[i].height) {
+        boolean ballinPlay = false;
+        for(int i=0;i<ballCount; i++){
+            if (ballArray[i].ypos < 700) {
+                ballinPlay = true;
+            }
+        }
+        if (!ballinPlay){
             g.setFont(new Font("Arial", Font.BOLD, 37));
             g.setColor(new Color(255, 0, 0));
             g.drawString("You Lost :(", 450, 400);
         }
-        }
         //says you won when hitting top(get through all blocks first)
-        for(int i = 0; i<ballArray.length; i++){
-        if (ballArray[i].ypos <= 0) {
-            ballArray[i].dy = 0;
-            ballArray[i].dx = 0;
-            g.setFont(new Font("Arial", Font.BOLD, 50));
-            g.setColor(new Color(0, 0, 0));
-            g.drawString("You Won :D", 430, 400);
+        boolean gameFinish = false;
+        for(int i=0;i<ballCount; i++){
+            if (ballArray[i].ypos < 700) {
+                gameFinish = true;
+            }
         }
+        if (!gameFinish){
+            g.setFont(new Font("Arial", Font.BOLD, 37));
+            g.setColor(new Color(255, 0, 0));
+            g.drawString("You Won :D", 450, 400);
         }
 
         for (int x = 0; x < BlueBlockArray.length; x = x + 1) {
@@ -385,6 +395,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         bufferStrategy = canvas.getBufferStrategy();
         canvas.requestFocus();
         canvas.addKeyListener(this);
+        canvas.addMouseListener(this);
         System.out.println("DONE graphic setup");
     }
 
@@ -429,10 +440,10 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             basketBallJesus.width = basketBallJesus.width - 5;
         }
 
-        if(ball.dx == 0 && ball.dy ==0 && e.getKeyCode() == 82){ //restart
-            setUpGraphics();
-
-        }
+//        if(ball.dx == 0 && ball.dy ==0 && e.getKeyCode() == 82){ //restart
+//            setUpGraphics();
+//
+//        }
 
     }
 
@@ -479,8 +490,8 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             int randX = (int)((Math.random()*400)+150);
             int randY = (int)((Math.random()*600)+100);
 
-            ball = new Ball("wesley", randX, randY);
-            ballImage = Toolkit.getDefaultToolkit().getImage("Wesley.png");
+            ballCount++;
+//            ballImage = Toolkit.getDefaultToolkit().getImage("Wesley.png");
 
         }
     }
